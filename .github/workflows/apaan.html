@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Untuk Idol </title>
+  <meta name="theme-color" content="#ff7aa2" />
+  <style>
+    :root{
+      --bg1:#ffebf1; --bg2:#ffe3f5; --ink:#2a2a2a; --accent:#ff5d9e; --accent-2:#7a5cff; --card:#ffffff; --muted:#6b6b6b;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      color:var(--ink);
+      background: radial-gradient(1200px 600px at 20% -10%, var(--bg2), transparent),
+                  radial-gradient(1000px 800px at 110% 10%, #ffe8f2, transparent),
+                  linear-gradient(180deg, var(--bg1), #fff);
+      overflow-x:hidden;
+    }
+    .wrap{min-height:100%; display:grid; place-items:center; padding:24px}.card{
+  width:min(720px, 92vw); background:var(--card); border-radius:28px; padding:22px 22px 26px; position:relative;
+  box-shadow:0 20px 40px rgba(255, 93, 158, .25), 0 6px 16px rgba(0,0,0,.08);
+  overflow:hidden; border:1px solid rgba(255,93,158,.16)
+}
+.ribbon{position:absolute; inset:auto -60px -60px auto; transform:rotate(-18deg); width:220px; height:220px; opacity:.06; filter:blur(1px)}
+.halo{position:absolute; inset:-80% -30% auto auto; width:320px; height:320px; background:radial-gradient(circle at 50% 50%, #ffd3e6 0, rgba(255,211,230,.6) 50%, transparent 60%); z-index:0}
+
+header{display:flex; align-items:center; gap:12px; position:relative; z-index:2}
+header .avatar{width:50px; height:50px; border-radius:50%; background:linear-gradient(45deg, var(--accent), var(--accent-2)); display:grid; place-items:center; color:#fff; font-weight:700; box-shadow:0 6px 18px rgba(122,92,255,.25)}
+header h1{font-size:22px; line-height:1.1; margin:0}
+header p{margin:2px 0 0; color:var(--muted); font-size:14px}
+
+.type{font-size:20px; line-height:1.6; margin:18px 0 10px; min-height:3.4em}
+.cursor{display:inline-block; width:10px; height:1.2em; background:var(--accent); vertical-align:-0.2em; margin-left:2px; animation:blink .9s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px}
+.btn{appearance:none; border:none; padding:12px 16px; border-radius:14px; font-weight:700; cursor:pointer; transition:.2s transform, .2s box-shadow; background:var(--ink); color:#fff}
+.btn.secondary{background:#fff; color:var(--ink); border:1px solid rgba(0,0,0,.08)}
+.btn:hover{transform:translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,.10)}
+
+.stats{display:flex; gap:16px; flex-wrap:wrap; margin-top:14px; color:#555}
+.pill{background:rgba(255,93,158,.10); border:1px solid rgba(255,93,158,.22); padding:8px 12px; border-radius:999px; font-size:13px}
+
+footer{margin-top:22px; font-size:12px; color:#7a7a7a}
+
+/* Floating hearts */
+.hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0}
+.heart{position:absolute; bottom:-40px; font-size:20px; opacity:0; animation:floatUp 6s linear infinite}
+@keyframes floatUp{0%{opacity:0; transform:translateY(0) scale(1)} 10%{opacity:1} 90%{opacity:1} 100%{opacity: -2; transform:translateY(-110vh) scale(1.6)}}
+
+.card .content{position:relative; z-index:2}
+.hide{display:none}
+
+/* Responsive */
+@media (max-width:420px){ header h1{font-size:18px} .type{font-size:18px} }
+
+  </style>
+</head>
+<body>
+  <div class="hearts" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="card">
+      <div class="halo"></div>
+      <svg class="ribbon" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M99.7 9.4c11.9 18.8 48.4 31.7 49 57.7.6 24.5-31.1 24.1-31.4 48-.2 16.1 13 24.4 12.8 38.9-.2 14.5-13.8 24.1-26.4 23.5-12.6-.6-24.2-11-24-25.6.2-17.7 18.2-22 19.1-39.5.7-14.1-13.7-19.6-20-31.5-7-13.1-4.7-31.5 3.7-41.3 8.4-9.9 24.3-10.8 36.2-30.2Z" fill="currentColor"/></svg><div class="content">
+    <header>
+      <div class="avatar" id="avatar">F</div>
+      <div>
+        <h1 id="title">WOII, <span id="herName">IDOLL</span> ✨</h1>
+        <p id="subtitle">Ada pesan kecil buat lo..</p>
+      </div>
+    </header>
+
+    <p class="type" id="typeArea"><span id="typewriter"></span><span class="cursor"></span></p>
+
+    <div class="actions">
+      <button class="btn" id="btnOpen">Buka Surat 💌</button>
+      <button class="btn secondary" id="btnCopy">Salin Pesan</button>
+      <button class="btn secondary" id="btnShare">Bagikan</button>
+    </div>
+
+    <div class="stats">
+      <span class="pill" id="since">⏳ Loading...</span>
+      <span class="pill"><span id="likes">0</span></span>
+    </div>
+
+    <footer>
+      Ini Gabut Doang — <span id="signature">Fanss</span>
+    </footer>
+  </div>
+</div>
+
+  </div>  <script>
+    // ————— CONFIG —————
+    const CONFIG = {
+      herName: "IDOLLL",          // Ubah nama target di sini
+      yourName: "Fanss",       // Namamu buat signature
+      startDate: "2024-12-01", // (opsional) tanggal kenal/jadian, format YYYY-MM-DD
+      messages: [
+        "Semoga hari lu ringan kayak awan, dan senyum lu tetap juara.",
+        "Lu nggak perlu jadi sempurna. Cukup jadi lu—itu udah favorit gw anjayy.",
+        "Kalau capek, istirahat ya. gw di sini, nggak ke mana-mana.",
+        "Random but true: setiap notifikasi dari lu = good mood instant."
+      ]
+    };
+
+    // ————— STATE —————
+    const el = {
+      heartLayer: document.querySelector('.hearts'),
+      herName: document.getElementById('herName'),
+      title: document.getElementById('title'),
+      subtitle: document.getElementById('subtitle'),
+      typewriter: document.getElementById('typewriter'),
+      typeArea: document.getElementById('typeArea'),
+      btnOpen: document.getElementById('btnOpen'),
+      btnCopy: document.getElementById('btnCopy'),
+      btnShare: document.getElementById('btnShare'),
+      since: document.getElementById('since'),
+      likes: document.getElementById('likes'),
+      avatar: document.getElementById('avatar'),
+      signature: document.getElementById('signature'),
+    };
+
+    // ————— INIT —————
+    function init(){
+      el.herName.textContent = CONFIG.herName || 'Kamu';
+      el.signature.textContent = CONFIG.yourName || '';
+      el.avatar.textContent = (CONFIG.herName||'K').charAt(0).toUpperCase();
+      if(CONFIG.startDate){ el.since.textContent = `MMQ`; }
+      else { el.since.textContent = 'Hari ini bakal seru ✨'; }
+      pulseHearts();
+    }
+
+    // ————— TYPEWRITER —————
+    let playing = false; let msgIndex = 0; let likeCount = 0;
+    async function typeText(text){
+      el.typewriter.textContent = '';
+      for(let i=0;i<text.length;i++){
+        await sleep(22 + Math.random()*28);
+        el.typewriter.textContent += text[i];
+      }
+    }
+    async function playSequence(){
+      if(playing) return; playing = true;
+      const msgs = CONFIG.messages;
+      for(let i=0;i<msgs.length;i++){
+        await typeText(msgs[i]);
+        likeBurst();
+        await sleep(800);
+        if(i < msgs.length-1){ await fadeOut(); el.typewriter.textContent=''; await fadeIn(); }
+      }
+      playing = false;
+    }
+    function fadeOut(){ return animate(el.typeArea, [{opacity:1},{opacity:0}], {duration:220, fill:'forwards'}).finished; }
+    function fadeIn(){ return animate(el.typeArea, [{opacity:0},{opacity:1}], {duration:220, fill:'forwards'}).finished; }
+
+    // ————— HEARTS —————
+    function pulseHearts(){
+      setInterval(()=> spawnHeart(), 650);
+    }
+    function spawnHeart(){
+      const node = document.createElement('div');
+      node.className = 'heart';
+      node.textContent = Math.random()>.5 ? '🤟' : (Math.random()>.5 ? '🤪' : '😝');
+      node.style.left = Math.random()*100 + 'vw';
+      node.style.animationDuration = (4 + Math.random()*4) + 's';
+      node.style.fontSize = (14 + Math.random()*20) + 'px';
+      node.style.opacity = 0;
+      el.heartLayer.appendChild(node);
+      requestAnimationFrame(()=> node.style.opacity = 1);
+      setTimeout(()=> node.remove(), 8000);
+    }
+
+    // ————— EFFECTS —————
+    function likeBurst(){
+      likeCount += 1; el.likes.textContent = likeCount;
+      // mini confetti using emojis
+      const emojis = ['✨','💘','🌸','💞'];
+      for(let i=0;i<14;i++){
+        setTimeout(()=>{
+          const span = document.createElement('span');
+          span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+          span.style.position='fixed'; span.style.left=(50 + (Math.random()*40-20))+'vw'; span.style.top='40vh';
+          span.style.fontSize=(12+Math.random()*18)+'px'; span.style.transform=`translate(${(Math.random()*2-1)*40}px, ${(Math.random()*-1)*80}px)`;
+          span.style.transition='transform .8s ease, opacity .8s ease';
+          document.body.appendChild(span);
+          requestAnimationFrame(()=>{
+            span.style.transform = `translate(${(Math.random()*2-1)*240}px, ${(Math.random()*-1)*240}px)`;
+            span.style.opacity = 0;
+          });
+          setTimeout(()=> span.remove(), 900);
+        }, i*30);
+      }
+    }
+
+    // ————— HELPERS —————
+    const sleep = (ms)=> new Promise(r=>setTimeout(r, ms));
+    const animate = (el, keyframes, opts)=> el.animate(keyframes, opts);
+    function prettySince(dateStr){
+      const start = new Date(dateStr);
+      const now = new Date();
+      const diff = now - start;
+      const days = Math.floor(diff/86400000);
+      const months = Math.floor(days/30.437);
+      const years = Math.floor(days/365.25);
+      if(years>0) return `${years} tahun, ${months%12} bulan`;
+      if(months>0) return `${months} bulan, ${days%30} hari`;
+      return `${days} hari yang lalu`;
+    }
+
+    // ————— ACTIONS —————
+    el.btnOpen.addEventListener('click', async()=>{
+      await playSequence();
+    });
+
+    el.btnCopy.addEventListener('click', async()=>{
+      const text = CONFIG.messages.join('\n\n');
+      try{
+        await navigator.clipboard.writeText(text);
+        toast('Pesan disalin ✅'); likeBurst();
+      }catch(e){ toast('Gagal menyalin, update browser-mu ya.'); }
+    });
+
+    el.btnShare.addEventListener('click', async()=>{
+      const text = CONFIG.messages.join('\n\n');
+      const title = `Untuk ${CONFIG.herName}`;
+      try{
+        if(navigator.share){ await navigator.share({title, text}); }
+        else{ await navigator.clipboard.writeText(text); toast('Fitur Share belum ada. Pesan disalin ✅'); }
+        likeBurst();
+      }catch(e){ console.log(e); }
+    });
+
+    function toast(msg){
+      const t = document.createElement('div');
+      t.textContent = msg;
+      Object.assign(t.style, {position:'fixed', left:'50%', bottom:'22px', transform:'translateX(-50%)', background:'#000', color:'#fff', padding:'10px 14px', borderRadius:'12px', fontSize:'14px', boxShadow:'0 10px 22px rgba(0,0,0,.2)', zIndex:9999, opacity:0});
+      document.body.appendChild(t);
+      requestAnimationFrame(()=>{ t.style.transition='opacity .2s ease, transform .2s ease'; t.style.opacity=1; t.style.transform='translateX(-50%) translateY(-4px)'; });
+      setTimeout(()=>{ t.style.opacity=0; t.style.transform='translateX(-50%) translateY(0)'; }, 1600);
+      setTimeout(()=> t.remove(), 1900);
+    }
+
+    // Run
+    init();
+  </script></body>
+</html>
