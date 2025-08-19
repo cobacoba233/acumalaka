@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="id">
+ <!DOCTYPE html><html lang="id"> 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -92,134 +92,134 @@ footer{margin-top:22px; font-size:12px; color:#7a7a7a}
 </div>
 
   </div>  <script>
-    // ————— CONFIG —————
-    const CONFIG = {
-      herName: "IDOLLL",          // Ubah nama target di sini
-      yourName: "Fanss",       // Namamu buat signature
-      startDate: "2024-12-01", // (opsional) tanggal kenal/jadian, format YYYY-MM-DD
-      messages: [
-        "Semoga hari lu ringan kayak awan, dan senyum lu tetap juara.",
-        "Lu nggak perlu jadi sempurna. Cukup jadi lu—itu udah favorit gw anjayy.",
-        "Kalau capek, istirahat ya. gw di sini, nggak ke mana-mana.",
-        "Random but true: setiap notifikasi dari lu = good mood instant."
-      ]
-    };
+document.addEventListener("DOMContentLoaded", () => {
+  // ————— CONFIG —————
+  const CONFIG = {
+    herName: "IDOLLL",          
+    yourName: "Fanss",          
+    startDate: "",              
+    messages: [
+      "Semoga hari lu ringan kayak awan, dan senyum lu tetap juara.",
+      "Lu nggak perlu jadi sempurna. Cukup jadi lu—itu udah favorit gw anjayy.",
+      "Kalau capek, istirahat ya. gw di sini, nggak ke mana-mana.",
+      "Random but true: setiap notifikasi dari lu = good mood instant.",
+      "Apapun harinya, jangan lupa kalau ada yang selalu dukung lu ✨",
+      "HAHAHAHA ALAY BANGET YAA",
+      "THANYOU UDH MAU BUKA,FUKYOU🖕🏻🖕🏻🖕🏻"
+    ]
+  };
 
-    // ————— STATE —————
-    const el = {
-      heartLayer: document.querySelector('.hearts'),
-      herName: document.getElementById('herName'),
-      title: document.getElementById('title'),
-      subtitle: document.getElementById('subtitle'),
-      typewriter: document.getElementById('typewriter'),
-      typeArea: document.getElementById('typeArea'),
-      btnOpen: document.getElementById('btnOpen'),
-      btnCopy: document.getElementById('btnCopy'),
-      btnShare: document.getElementById('btnShare'),
-      since: document.getElementById('since'),
-      likes: document.getElementById('likes'),
-      avatar: document.getElementById('avatar'),
-      signature: document.getElementById('signature'),
-    };
+  // ————— STATE —————
+  const el = {
+    heartLayer: document.querySelector('.hearts'),
+    herName: document.getElementById('herName'),
+    typewriter: document.getElementById('typewriter'),
+    typeArea: document.getElementById('typeArea'),
+    btnOpen: document.getElementById('btnOpen'),
+    btnCopy: document.getElementById('btnCopy'),
+    btnShare: document.getElementById('btnShare'),
+    since: document.getElementById('since'),
+    likes: document.getElementById('likes'),
+    avatar: document.getElementById('avatar'),
+    signature: document.getElementById('signature'),
+  };
 
-    // ————— INIT —————
-    function init(){
-      el.herName.textContent = CONFIG.herName || 'Kamu';
-      el.signature.textContent = CONFIG.yourName || '';
-      el.avatar.textContent = (CONFIG.herName||'K').charAt(0).toUpperCase();
-      if(CONFIG.startDate){ el.since.textContent = `MMQ`; }
-      else { el.since.textContent = 'Hari ini bakal seru ✨'; }
-      pulseHearts();
+  // ————— INIT —————
+  function init(){
+    el.herName.textContent = CONFIG.herName || 'Kamu';
+    el.signature.textContent = CONFIG.yourName || '';
+    el.avatar.textContent = (CONFIG.herName||'K').charAt(0).toUpperCase();
+    el.since.textContent = CONFIG.startDate ? prettySince(CONFIG.startDate) : 'HAHAHAHA ✨';
+    pulseHearts();
+  }
+
+  // ————— TYPEWRITER —————
+  let playing = false; 
+  let likeCount = 0;
+
+  async function typeText(text){
+    el.typewriter.textContent = '';
+    for(let i=0;i<text.length;i++){
+      await sleep(30 + Math.random()*25);
+      el.typewriter.textContent += text[i];
     }
+  }
 
-    // ————— TYPEWRITER —————
-    let playing = false; let msgIndex = 0; let likeCount = 0;
-    async function typeText(text){
-      el.typewriter.textContent = '';
-      for(let i=0;i<text.length;i++){
-        await sleep(22 + Math.random()*28);
-        el.typewriter.textContent += text[i];
+  async function playSequence(){
+    if(playing) return; 
+    playing = true;
+    for(let i=0;i<CONFIG.messages.length;i++){
+      await typeText(CONFIG.messages[i]);
+      likeBurst();
+      await sleep(1000);
+      if(i < CONFIG.messages.length-1){ 
+        await fadeOut(); 
+        el.typewriter.textContent=''; 
+        await fadeIn(); 
       }
     }
-    async function playSequence(){
-      if(playing) return; playing = true;
-      const msgs = CONFIG.messages;
-      for(let i=0;i<msgs.length;i++){
-        await typeText(msgs[i]);
-        likeBurst();
-        await sleep(800);
-        if(i < msgs.length-1){ await fadeOut(); el.typewriter.textContent=''; await fadeIn(); }
-      }
-      playing = false;
-    }
-    function fadeOut(){ return animate(el.typeArea, [{opacity:1},{opacity:0}], {duration:220, fill:'forwards'}).finished; }
-    function fadeIn(){ return animate(el.typeArea, [{opacity:0},{opacity:1}], {duration:220, fill:'forwards'}).finished; }
+    playing = false;
+  }
 
-    // ————— HEARTS —————
-    function pulseHearts(){
-      setInterval(()=> spawnHeart(), 650);
-    }
-    function spawnHeart(){
-      const node = document.createElement('div');
-      node.className = 'heart';
-      node.textContent = Math.random()>.5 ? '🤟' : (Math.random()>.5 ? '🤪' : '😝');
-      node.style.left = Math.random()*100 + 'vw';
-      node.style.animationDuration = (4 + Math.random()*4) + 's';
-      node.style.fontSize = (14 + Math.random()*20) + 'px';
-      node.style.opacity = 0;
-      el.heartLayer.appendChild(node);
-      requestAnimationFrame(()=> node.style.opacity = 1);
-      setTimeout(()=> node.remove(), 8000);
-    }
+  function fadeOut(){ 
+    return el.typeArea.animate([{opacity:1},{opacity:0}], {duration:220, fill:'forwards'}).finished; 
+  }
+  function fadeIn(){ 
+    return el.typeArea.animate([{opacity:0},{opacity:1}], {duration:220, fill:'forwards'}).finished; 
+  }
 
-    // ————— EFFECTS —————
-    function likeBurst(){
-      likeCount += 1; el.likes.textContent = likeCount;
-      // mini confetti using emojis
-      const emojis = ['✨','💘','🌸','💞'];
-      for(let i=0;i<14;i++){
-        setTimeout(()=>{
-          const span = document.createElement('span');
-          span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-          span.style.position='fixed'; span.style.left=(50 + (Math.random()*40-20))+'vw'; span.style.top='40vh';
-          span.style.fontSize=(12+Math.random()*18)+'px'; span.style.transform=`translate(${(Math.random()*2-1)*40}px, ${(Math.random()*-1)*80}px)`;
-          span.style.transition='transform .8s ease, opacity .8s ease';
-          document.body.appendChild(span);
-          requestAnimationFrame(()=>{
-            span.style.transform = `translate(${(Math.random()*2-1)*240}px, ${(Math.random()*-1)*240}px)`;
-            span.style.opacity = 0;
-          });
-          setTimeout(()=> span.remove(), 900);
-        }, i*30);
-      }
-    }
+  // ————— HEARTS —————
+  function pulseHearts(){ setInterval(()=> spawnHeart(), 650); }
+  function spawnHeart(){
+    const node = document.createElement('div');
+    node.className = 'heart';
+    node.textContent = Math.random()>.5 ? '🤟' : (Math.random()>.5 ? '🤪' : '😝');
+    node.style.left = Math.random()*100 + 'vw';
+    node.style.animationDuration = (4 + Math.random()*4) + 's';
+    node.style.fontSize = (14 + Math.random()*20) + 'px';
+    el.heartLayer.appendChild(node);
+    setTimeout(()=> node.remove(), 8000);
+  }
 
-    // ————— HELPERS —————
-    const sleep = (ms)=> new Promise(r=>setTimeout(r, ms));
-    const animate = (el, keyframes, opts)=> el.animate(keyframes, opts);
-    function prettySince(dateStr){
-      const start = new Date(dateStr);
-      const now = new Date();
-      const diff = now - start;
-      const days = Math.floor(diff/86400000);
-      const months = Math.floor(days/30.437);
-      const years = Math.floor(days/365.25);
-      if(years>0) return `${years} tahun, ${months%12} bulan`;
-      if(months>0) return `${months} bulan, ${days%30} hari`;
-      return `${days} hari yang lalu`;
-    }
+  // ————— EFFECTS —————
+  function likeBurst(){
+    likeCount += 1; 
+    el.likes.textContent = likeCount;
+  }
 
-    // ————— ACTIONS —————
-    el.btnOpen.addEventListener('click', async()=>{
-      await playSequence();
-    });
+  // ————— HELPERS —————
+  const sleep = (ms)=> new Promise(r=>setTimeout(r, ms));
+  function prettySince(dateStr){
+    const start = new Date(dateStr);
+    const now = new Date();
+    const diff = now - start;
+    const days = Math.floor(diff/86400000);
+    const months = Math.floor(days/30.437);
+    const years = Math.floor(days/365.25);
+    if(years>0) return `${years} tahun, ${months%12} bulan`;
+    if(months>0) return `${months} bulan, ${days%30} hari`;
+    return `${days} hari yang lalu`;
+  }
 
-    el.btnCopy.addEventListener('click', async()=>{
-      const text = CONFIG.messages.join('\n\n');
-      try{
-        await navigator.clipboard.writeText(text);
-        toast('Pesan disalin ✅'); likeBurst();
-      }catch(e){ toast('Gagal menyalin, update browser-mu ya.'); }
+  // ————— ACTIONS —————
+  el.btnOpen.addEventListener('click', playSequence);
+  el.btnCopy.addEventListener('click', async()=>{
+    const text = CONFIG.messages.join('\n\n');
+    await navigator.clipboard.writeText(text);
+    alert('Pesan disalin ✅');
+  });
+  el.btnShare.addEventListener('click', async()=>{
+    const text = CONFIG.messages.join('\n\n');
+    const title = `Untuk ${CONFIG.herName}`;
+    if(navigator.share){ await navigator.share({title, text}); }
+    else{ await navigator.clipboard.writeText(text); alert('Pesan disalin ✅'); }
+  });
+
+  // Run
+  init();
+});
+</script></body>
+ </html>ch(e){ toast('Gagal menyalin, update browser-mu ya.'); }
     });
 
     el.btnShare.addEventListener('click', async()=>{
@@ -230,7 +230,7 @@ footer{margin-top:22px; font-size:12px; color:#7a7a7a}
         else{ await navigator.clipboard.writeText(text); toast('Fitur Share belum ada. Pesan disalin ✅'); }
         likeBurst();
       }catch(e){ console.log(e); }
-    });
+   });
 
     function toast(msg){
       const t = document.createElement('div');
